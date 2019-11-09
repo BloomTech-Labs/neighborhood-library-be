@@ -6,15 +6,20 @@
 
 # API Documentation
 
-#### 1️⃣ Backend delpoyed at [🚫name service here](🚫add URL here) <br>
+#### 1️⃣ Backend delpoyed to Heroku (🚫add URL here)
 
-## 1️⃣ Getting started
+## Getting started
 
 To get the server running locally:
 
-🚫 adjust these scripts to match your project
-
 - Clone this repo
+
+Create a .env file with the following keys:
+PGHOST=[localhost]
+PGDB=[database name]
+PGUSER=[database user]
+PGPASS=[database user password]
+
 - **yarn install** to install all required dependencies
 - **yarn server** to start the local server
 - **yarn test** to start server using testing environment
@@ -29,8 +34,6 @@ To get the server running locally:
 -    Point Four
 
 ## 2️⃣ Endpoints
-
-🚫This is a placeholder, replace the endpoints, access controll, and descriptioin to match your project
 
 #### Organization Routes
 
@@ -50,6 +53,26 @@ To get the server running locally:
 | POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
 | PUT    | `/users/:userId`        | owners, supervisors |                                                    |
 | DELETE | `/users/:userId`        | owners, supervisors |                                                    |
+
+#### Lender Routes
+API prefix: `/api/lender-collection`
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| GET    | `/:lender-id`           | n/a                 | Returns info for the logged in lender.             |
+| POST   | `/`                     | n/a                 | Adds book record for lender.                       |
+| PUT    | `/:id`                  | n/a                 | Updates if book is available.                      |
+| DELETE | `/:id`                  | n/a                 | Deletes book record for lender.                    |
+
+#### Borrower Routes
+API prefix: `/api/borrower-wishlist`
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| GET    | `/:borrower_id`         | n/a                 | Returns info for the logged in borrower.           |
+| POST   | `/`                     | n/a                 | Adds book record for borrower.                     |
+| PUT    | `/:id`                  | n/a                 | Updates if book is available.                      |
+| DELETE | `/:id`                  | n/a                 | Deletes book record for borrower.                  |
 
 # Data Model
 
