@@ -1,25 +1,19 @@
-🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
-
-🚫 The numbers 1️⃣ through 3️⃣ next to each item represent the week that part of the docs needs to be comepleted by.  Make sure to delete the numbers by the end of Labs.
-
 🚫 Each student has a required minimum number of meaningful PRs each week per the rubric.  Contributing to docs does NOT count as a PR to meet your weekly requirements.
 
 # API Documentation
 
-#### 1️⃣ Backend delpoyed to Heroku (🚫add URL here)
+#### Backend delpoyed to Heroku (https://muovivlio.herokuapp.com/)
 
 ## Getting started
 
 To get the server running locally:
 
 - Clone this repo
-
-Create a .env file with the following keys:
-PGHOST=[localhost]
-PGDB=[database name]
-PGUSER=[database user]
-PGPASS=[database user password]
-
+- Create a .env file with the following keys:
+    PGHOST=[localhost]
+    PGDB=[database name]
+    PGUSER=[database user]
+    PGPASS=[database user password]
 - **yarn install** to install all required dependencies
 - **yarn server** to start the local server
 - **yarn test** to start server using testing environment
@@ -33,33 +27,26 @@ PGPASS=[database user password]
 -    Point Three
 -    Point Four
 
-## 2️⃣ Endpoints
-
-#### Organization Routes
-
-| Method | Endpoint                | Access Control | Description                                  |
-| ------ | ----------------------- | -------------- | -------------------------------------------- |
-| GET    | `/organizations/:orgId` | all users      | Returns the information for an organization. |
-| PUT    | `/organizatoins/:orgId` | owners         | Modify an existing organization.             |
-| DELETE | `/organizations/:orgId` | owners         | Delete an organization.                      |
+## Endpoints
 
 #### User Routes
+API prefix: ``
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
 | GET    | `/users/current`        | all users           | Returns info for the logged in user.               |
-| GET    | `/users/org/:userId`    | owners, supervisors | Returns all users for an organization.             |
-| GET    | `/users/:userId`        | owners, supervisors | Returns info for a single user.                    |
-| POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
-| PUT    | `/users/:userId`        | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`        | owners, supervisors |                                                    |
+| GET    | `/users/org/:userId`    | all users           | Returns all users for an organization.             |
+| GET    | `/users/:userId`        | all users           | Returns info for a single user.                    |
+| POST   | `/users/register/owner` | all users           | Creates a new user as owner of a new organization. |
+| PUT    | `/users/:userId`        | all users           |                                                    |
+| DELETE | `/users/:userId`        | all users           |                                                    |
 
 #### Lender Routes
 API prefix: `/api/lender-collection`
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/:lender-id`           | n/a                 | Returns info for the logged in lender.             |
+| GET    | `/:lender-id`           | n/a                 | Returns books added by lender.                     |
 | POST   | `/`                     | n/a                 | Adds book record for lender.                       |
 | PUT    | `/:id`                  | n/a                 | Updates if book is available.                      |
 | DELETE | `/:id`                  | n/a                 | Deletes book record for lender.                    |
@@ -69,29 +56,12 @@ API prefix: `/api/borrower-wishlist`
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/:borrower_id`         | n/a                 | Returns info for the logged in borrower.           |
+| GET    | `/:borrower_id`         | n/a                 | Returns books added by borrow.                     |
 | POST   | `/`                     | n/a                 | Adds book record for borrower.                     |
-| PUT    | `/:id`                  | n/a                 | Updates if book is available.                      |
-| DELETE | `/:id`                  | n/a                 | Deletes book record for borrower.                  |
+| PUT    | `/:id`                  | n/a                 | Updates if book request status for borrow.         |
+| DELETE | `/:id`                  | n/a                 | Deletes book for borrower.                         |
 
 # Data Model
-
-🚫This is just an example. Replace this with your data model
-
-#### 2️⃣ ORGANIZATIONS
-
----
-
-```
-{
-  id: UUID
-  name: STRING
-  industry: STRING
-  paid: BOOLEAN
-  customer_id: STRING
-  subscription_id: STRING
-}
-```
 
 #### USERS
 
@@ -100,44 +70,68 @@ API prefix: `/api/borrower-wishlist`
 ```
 {
   id: UUID
-  organization_id: UUID foreign key in ORGANIZATIONS table
-  first_name: STRING
-  last_name: STRING
-  role: STRING [ 'owner', 'supervisor', 'employee' ]
-  email: STRING
-  phone: STRING
-  cal_visit: BOOLEAN
-  emp_visit: BOOLEAN
-  emailpref: BOOLEAN
-  phonepref: BOOLEAN
+  user_name: STRING
+  user_email: STRING
+  user_identity: STRING (classification of login)
+  user_credential: STRING
+  city: STRING
+  state: STRING
 }
 ```
 
-## 2️⃣ Actions
+#### LENDERS
 
-🚫 This is an example, replace this with the actions that pertain to your backend
+---
 
-`getOrgs()` -> Returns all organizations
+```
+{
+  id: UUID
+  lender_id: INTEGER references id in USERS table
+  google_book_id: INTEGER
+  isbn: INTEGER
+  is_available: BOOLEAN
+}
+```
 
-`getOrg(orgId)` -> Returns a single organization by ID
+#### BORROWERS
 
-`addOrg(org)` -> Returns the created org
+---
 
-`updateOrg(orgId)` -> Update an organization by ID
+```
+{
+  id: UUID
+  borrower_id: INTEGER references id in USERS table
+  google_book_id: INTEGER
+  isbn: INTEGER
+  request_to_borrow: BOOLEAN
+}
+```
 
-`deleteOrg(orgId)` -> Delete an organization by ID
-<br>
-<br>
-<br>
-`getUsers(orgId)` -> if no param all users
+## Actions
 
-`getUser(userId)` -> Returns a single user by user ID
+#### USERS
 
-`addUser(user object)` --> Creates a new user and returns that user. Also creates 7 availabilities defaulted to hours of operation for their organization.
+`` ->
+`` ->
+`` ->
+`` ->
 
-`updateUser(userId, changes object)` -> Updates a single user by ID.
+#### LENDERS
 
-`deleteUser(userId)` -> deletes everything dependent on the user
+`findBooksByLenderId(lender_id)` -> Returns all books by lender ID
+`findBookById(id)` -> Returns lendable book by ID
+`addBook(lenderBook)` -> Creates lendable book
+`toggleAvailability(lenderBook)` -> Updates book available status by book ISBN
+`removeBook(lenderBook)` -> Deletes lendable book by lender ID
+
+#### BORROWERS
+
+`findBooksByBorrowerId(borrower_id)` -> Returns books by borrower ID
+`findBookById(id)` -> Returns book by borrower ID
+`addBook(borrowWishlist)` -> Creates borrow request for book
+`toggleRequestToBorrow(borrowWishlist)` -> Toggles borrow request flag in UI
+`removeBook(borrowWishlist)` -> Deletes book request
+
 
 ## 3️⃣ Environment Variables
 
