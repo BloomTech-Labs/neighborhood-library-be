@@ -51,13 +51,23 @@ API prefix: `/api/borrower-wishlist`
 | PUT    | `/:id`                  | admins, logged in user  | Updates book request status for borrow record.    |
 | DELETE | `/:id`                  | admins, logged in user  | Deletes wishlisted book for borrower.         |
 
-#### User Routes
+#### Transaction Routes
 API prefix: `/api/transaction`
 
 | Method | Endpoint                | Access Control      | Description                                        |
 | ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| POST   | `/:id`                | admins, logged in user  | Adds lend/borrow transaction.          |
+| GET   | `/:id`                | admins, logged in user  | Returns lend/borrow transaction.
+| POST   | `/`                | admins, logged in user  | Adds lend/borrow transaction.          |
 | PUT    | `/:id`                   | admins, logged in user  | Updates lend/borrow transaction.|
+
+#### Message Routes
+API prefix: `/api/message`
+
+| Method | Endpoint                | Access Control      | Description                                        |
+| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
+| GET  | `/`                | admins, logged in user  | Returns all the m.          |
+| GET    | `//tran/:transaction_id`| admins, logged in user  | Returns all the transactions for given                                                                                        message|
+| POST    | `/`                   | admins, logged in user  | Adds message from chat.|
 
 
 # Data Model
@@ -121,7 +131,20 @@ API prefix: `/api/transaction`
   return_time: TIMESTAMP (auto assigned)
 }
 ```
+#### MESSAGES
 
+---
+
+```
+{
+  id: UUID
+  transaction_id: INTEGER (references id in TRANSACTIONS table)
+  sender_id:INTEGER (references id in USERS table)
+  content:STRING
+  message_time:TIMESTAMP(auto assigned)
+}
+
+```
 
 ## Actions
 
@@ -154,6 +177,11 @@ API prefix: `/api/transaction`
 - `addTransaction(info)` -> Creates transaction
 - `updateReturnTime(id)` -> Updates transaction with returned book date
 
+#### MESSAGES
+
+- `findMessageById(id)` -> Returns message info
+- `findMessageByTranId(id)` -> Returns message info for given transaction id
+- `addMessage(info)` -> Creates message
 
 ## Environment Variables
 
